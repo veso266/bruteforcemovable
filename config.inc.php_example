@@ -1,0 +1,13 @@
+<?php
+
+$CONF = array(
+	'mysql' => array(
+		'host' => 'localhost',
+		'user' => 'root',
+		'password' => '',
+		'database' => 'bruteforcemovable'
+	),
+	'recaptcha' => array(
+		'secret' => 'XXXXXXXXXXXXX'
+	)
+);
