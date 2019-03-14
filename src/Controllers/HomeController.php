@@ -4,39 +4,24 @@ namespace SeedCloud\Controllers;
 
 
 use SeedCloud\BaseController;
+use SeedCloud\ConfigManager;
 
 class HomeController extends BaseController {
     protected $viewFolder = 'home';
-	public $bannedIPs = ['94.254.174.65', '35.202.2.139', '35.226.5.63', '35.232.24.145', '94.254.173.9'];
-	public $authKeys = [
-	'24B538C6D10523BCE86FC4EAD90C0C5AC306CC9EBC603CC69107B69517733318',
-	'2F3D75B447EA2966CC384D66290E8D1C52228E54CB2BE4029F6C1C686E789EAF',
-	'3C97A7ACA386DEB4E7C6ED97B18CB7A44894A10E855313BEE2609452413DA90C',
-	'BAFF4FB62C8B1C5A7934AEB176930B58670BC06D1DB866B398B7A511A6B90F25',
-	'9BAF49839728805DD313FEFD58643D10B5759AE269FB82E97701296264B2FAC9',
-	'F3E07946262C3FB1B7FE99D433AC0AF9978E99751D0E9D3FBC4CA242B5679F9D',
-	'33f8a8d5c8a80f2bac4c882784d09565b7864f5d06b8245ab41a6ee9a5bb49e6',
-	'951be890a524d19ebbc48278ac94df872aea4d2ea1488dc7f8dc2275496c9dce',
-	'3078386225291574682E92498DB30D7BDDF382E4491215609DF7DC1153E90339',
-	'c3e7cd635716425d574b7a0dc5a5d1f95df112b5fdae5684a8c0b8777f6ce44a',
-	'9608C3466CCDDBBD35CF72644D9EA1853F7965DA40045AA24EE5BD408110A675',
-	'EA3BD73E2B506E00527232B3ED743C066DA83A8E3066F62A71E75EB9B4AA1DB6',
-	'7477D53CA603E95AA1E0E0376B8414A7122A407CAE1935FA44C6597DB3BC8592',
-	'8DF4FC847AAE26F544E04940A07E45EDEBD3A6EE92A218AA945C6F08EA8AE9F3',
-	'52B5CD277FBCD7882372813E9F952E38246DBB6E8E6274029B086A384A7F37DD',
-	'525ECA1D5089DBDCBB6700D910C5E0BC23FBAA23EE026C0E224C2B45490E5F29'
-	
-	];
 
     private function getDBConnection() {
-        $connection = new \PDO("mysql:dbname=bruteforcemovable;host=127.0.0.1", 'bruteforcemovable', 'liK0sDLA'); 
+		$database = ConfigManager::GetConfiguration('database.database');
+        $host = ConfigManager::GetConfiguration('database.host');
+        $username = ConfigManager::GetConfiguration('database.username');
+        $password = ConfigManager::GetConfiguration('database.password');
+        $connection = new \PDO('mysql:dbname=' . $database . ';host=' . $host, $username, $password);
         return $connection;
     }
 	
 	protected function isProbablyValidId0($id0) {
 		return preg_match('/^(?![0-9a-fA-F]{4}(01|00)[0-9a-fA-F]{18}00[0-9a-fA-F]{6})[0-9a-fA-F]{32}$/', $id0);
 	}
-
+ 
 	protected function updateMinerStatus($action) {
 		$lastStatus = false;
 		$dbCon = $this->getDBConnection();
@@ -79,9 +64,6 @@ class HomeController extends BaseController {
 	}
 
 	protected function getMinerStatus() {
-		if (in_array($this->getRealIP(), $this->bannedIPs)) {
-			return;
-		}
 		$dbCon = $this->getDBConnection();
 		$statement = $dbCon->prepare('select * from minerstatus where ip_addr like :ipaddr and TIMESTAMPDIFF(MINUTE, last_action_at, now()) < 60');
 		$statement->bindValue('ipaddr', $this->getRealIP()); 
@@ -347,9 +329,6 @@ log.Println("id0check:", hex.EncodeToString(keyy), hex.EncodeToString(sha[:]), t
         var_dump($this->object2array($xmlFile));die;
 }	
 	$timeStart = microtime(true);
-		if (in_array($this->getRealIP(), $this->bannedIPs)) {
-			echo "bye";die;
-		}
         if (isset($_REQUEST['taskId']) && isset($_REQUEST['action']) && $_REQUEST['action'] == 'cancel') {
             /*$dbCon = $this->getDBConnection();
             $statement = $dbCon->prepare('update seedqueue set state = -100 where taskId like :taskId');
