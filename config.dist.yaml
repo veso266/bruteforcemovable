@@ -1,0 +1,9 @@
+database:
+  host: localhost
+  username: DB_USERNAME_HERE
+  password: DB_PASSWORD_HERE
+  database: DB_DATABASE_HERE
+recaptcha:
+  secret: RECAPTCHA_SECRET_HERE
+trusted:
+  secret: banana

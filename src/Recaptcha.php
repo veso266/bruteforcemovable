@@ -5,15 +5,14 @@ class Recaptcha
 {
     public static function validateRequest($recaptchaResponse)
     {
-		global $CONF;
         $post_data = http_build_query(array(
-            'secret' => $CONF['recaptcha']['secret'],
+            'secret' => ConfigManager::GetConfiguration('recaptcha.secret'),
             'response' => $recaptchaResponse,
             'remoteip' => $_SERVER['REMOTE_ADDR']
         ));
         $opts = array('http' => array(
             'method' => 'POST',
-            'header' => 'Content-type: application/x-www-form-urlencoded',
+            'header' => 'Content-type: application/x-www-form-urlencoded', 
             'content' => $post_data
         ));
         $context = stream_context_create($opts);

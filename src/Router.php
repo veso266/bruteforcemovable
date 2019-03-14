@@ -16,35 +16,43 @@ class Router {
     }
 
     private function getController() {
-		$page = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : '';
-		if ($page[0] == '/') {
-			$page = substr($page, 1);
-		}
-		
-		$page = explode('?', $page)[0];
-		$pageArray = explode('/', $page);
+	
+			$page = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : '';
+			if ($page[0] == '/') {
+				$page = substr($page, 1);
+			}
+			
+			$page = explode('?', $page)[0];
+			$pageArray = explode('/', $page);
 
-		switch ($pageArray[0]) {
-			case 'getWork':
-				return ['Home', 'getWork'];
-			case 'claimWork':
-				return ['Home', 'claimWork'];
-			case 'killWork':
-				return ['Home', 'killWork'];
-			case 'getPart1':
-				return ['Home', 'getPart1'];
-			case 'check':
-				return ['Home', 'check'];
-			case 'get_movable':
-				return ['Home', 'getMovable'];
-			case 'checkTimeouts':
-				return ['Home', 'checkTimeouts'];
-			case 'upload':
-				return ['Home', 'upload'];
-			default:
-				return ['Home', 'index'];
-				break;
-		}
+			switch ($pageArray[0]) {
+				case 'getWork':
+					return ['Home', 'getWork'];
+				case 'claimWork':
+					return ['Home', 'claimWork'];
+				case 'killWork':
+					return ['Home', 'killWork'];
+				case 'getPart1':
+					return ['Home', 'getPart1'];
+				case 'check':
+					return ['Home', 'check'];
+				case 'get_movable': 
+					return ['Home', 'getMovable'];
+				case 'checkTimeouts':
+					return ['Home', 'checkTimeouts'];
+				case 'upload':
+					return ['Home', 'upload'];
+				case 'frontend-api':
+					return ['Home', 'index'];
+					break;
+				case 'minerprofile':
+					return ['MinerProfile', 'index'];
+				case 'trusted':
+					return ['Trusted', 'index'];
+				default:
+					return ['Home', 'index'];
+					break;
+			}
     }
 
     /**
